@@ -32,7 +32,7 @@ bookingSchema.pre<IBooking>('save', async function () {
 
   const event = await Event.findById(this.eventId).exec();
   if (!event) {
-    throw new Error('Referenced event does not exist');
+    throw new Error('Referenced event does not exist.');
   }
 
   // If event has a date, ensure it's not in the past

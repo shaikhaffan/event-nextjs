@@ -3,16 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 import posthog from "posthog-js";
+import { IEvent } from "@/schema";
+import { EventData } from "@/schema/event";
 
-interface Props {
-  title: string;
-  image: string;
-  slug: string;
-  location?:string;
-  date?:string;
-  time?:string;
-}
-const EventCard = ({ title, image, slug,location,date,time }: Props) => {
+
+
+const EventCard = (props: EventData) => {
+  const { title, image, slug, location, date, time } = props;
+  
   const handleEventCardClick = () => {
     posthog.capture('event_card_clicked', {
       event_title: title,

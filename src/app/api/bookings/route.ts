@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '../../../lib/db';
-import Booking from '../../../schema/booking';
+import { connectDB } from '@/lib/db';
+import {Booking,Event } from "@/schema/index";
 
 export async function POST(req: Request) {
   try {
@@ -12,7 +12,10 @@ export async function POST(req: Request) {
     }
 
     await connectDB();
-
+    const alreadyBooked = await Booking.findOne({ eventId, userEmail });
+    if (alreadyBooked) {
+      return NextResponse.json({ error: 'You have already booked this event' }, { status: 400 });
+    }
     const booking = await Booking.create({ eventId, userEmail });
 
     return NextResponse.json(booking, { status: 201 });

@@ -1,21 +1,37 @@
 import mongoose, { Schema, Document } from 'mongoose';
-
+export type EventData = {
+  title: string;
+  slug?: string;
+  description?: string;
+  date?: string | Date;
+  time?: string;
+  location?: string;
+  venue?: string;
+  category?: string;
+  image?: string;
+  price?: number;
+  capacity?: number;
+  attendees?: number;
+  organizer?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 export interface IEvent extends Document {
   title: string;
   slug: string;
   description: string;
-  date: Date;
+  date: Date | string;
   time: string;
   location: string;
-  venue: string;
-  category: string;
-  image: string;
-  price: number;
-  capacity: number;
-  attendees: number;
-  organizer: string;
-  createdAt: Date;
-  updatedAt: Date;
+  venue?: string;
+  category?: string;
+  image?: string;
+  price?: number;
+  capacity?: number;
+  attendees?: number;
+  organizer?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const eventSchema = new Schema<IEvent>(

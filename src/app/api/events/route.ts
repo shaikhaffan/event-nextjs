@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Event } from '@/schema/index';
 import { v2 as cloudinary } from 'cloudinary';
+import { revalidateTag } from 'next/cache';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,6 +13,7 @@ cloudinary.config({
 export async function GET(req: Request) {
   try {
     await connectDB();
+    console.log("Connected to database");
     const events = await Event.find().sort({ date: 1 }).lean().exec();
     return NextResponse.json(events);
   } catch (err: any) {
@@ -72,7 +74,7 @@ export async function POST(req: Request) {
       price: price ? parseFloat(price) : 0,
       image: imageUrl,
     });
-
+    revalidateTag('events', 'hours');
     return NextResponse.json({ event, message: 'Event created successfully' }, { status: 201 });
   } catch (err: any) {
     return NextResponse.json({ error: err?.message || 'Unknown error' }, { status: 500 });
